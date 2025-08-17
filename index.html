@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>دارك</title>
+  <style>
+    :root{
+      --bg1:#0a0a0a;
+      --bg2:#111318;
+      --card:#151821;
+      --muted:#e9eef5;
+      --text:#e9eef5;
+      --brand:#baff3b;
+      --danger:#ff6b6b;
+      --shadow:0 10px 25px rgba(0,0,0,.35);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;min-height:100vh;display:flex;flex-direction:column;
+      background:url('background.jpg') center/cover no-repeat fixed;
+      color:var(--text);
+      font-family:"Noto Kufi Arabic",Arial,sans-serif;
+    }
+    header{position:sticky;top:0;z-index:50;background:rgba(12,12,16,.8);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.06)}
+    .nav{display:flex;align-items:center;gap:14px;padding:14px}
+    .logo img{height:40px}
+    .search{flex:1;display:flex;gap:10px}
+    .input,.select,.btn{border:1px solid rgba(255,255,255,.1);background:#101521;color:var(--text);padding:12px 14px;border-radius:12px}
+    .btn{cursor:pointer}
+    .btn.brand{background:var(--brand);color:#000;font-weight:700}
+    .cart-btn{position:relative}
+    .badge{position:absolute;top:-6px;left:-6px;background:var(--danger);color:#fff;border-radius:999px;min-width:22px;height:22px;display:grid;place-items:center;font-size:12px;padding:0 6px;border:2px solid var(--bg1)}
+    .chips{display:flex;gap:10px;margin:14px 0;flex-wrap:wrap}
+    .chip{padding:8px 12px;border:1px solid rgba(255,255,255,.1);border-radius:999px;cursor:pointer;font-size:14px;color:var(--muted)}
+    .chip.active{background:rgba(255,255,255,.15);color:var(--text)}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px;margin:20px 0;flex:1}
+    .card{background:var(--card);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+    .media{aspect-ratio:4/3;overflow:hidden}
+    .media img{width:100%;height:100%;object-fit:cover;cursor:pointer}
+    .content{padding:14px}
+    .row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+    .title{font-weight:700}
+    .price{font-weight:800}
+    .old{text-decoration:line-through;opacity:.6;margin-inline-start:8px}
+    .drawer{position:fixed;inset:0;pointer-events:none}
+    .drawer .backdrop{position:absolute;inset:0;background:rgba(0,0,0,.5);opacity:0;transition:.25s}
+    .drawer .panel{position:absolute;inset-block:0;left:0;width:min(400px,100%);background:#0e1322;transform:translateX(-105%);transition:.3s;display:flex;flex-direction:column}
+    .drawer.open{pointer-events:auto}
+    .drawer.open .backdrop{opacity:1}
+    .drawer.open .panel{transform:none}
+    .cart-list{padding:14px;display:flex;flex-direction:column;gap:12px;overflow:auto}
+    .cart-item{display:flex;gap:10px;align-items:center;background:rgba(255,255,255,.05);padding:8px;border-radius:12px}
+    .cart-item img{width:60px;height:60px;object-fit:cover;border-radius:8px}
+    .totals{padding:14px;border-top:1px solid rgba(255,255,255,.1);}
+    .modal{position:fixed;inset:0;display:none;place-items:center}
+    .modal.open{display:grid}
+    .modal .sheet{background:#0f1526;padding:16px;border-radius:12px;max-width:600px;width:95%}
+    .form{display:grid;gap:12px}
+    input,select{padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:#101521;color:var(--text)}
+    footer{margin-top:auto;padding:20px;text-align:center;background:#0b0c0f;color:var(--muted)}
+    footer a{color:var(--brand);text-decoration:none}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav">
+      <div class="logo"><img id="logoImg" src="logo.png" alt="شعار المتجر"></div>
+      <div class="search">
+        <input id="q" class="input" placeholder="ابحث عن منتج…" />
+        <button id="openCart" class="btn brand cart-btn">السلة <span id="cartCount" class="badge">0</span></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="chips" id="cats"></div>
+    <section class="grid" id="grid"></section>
+  </main>
+
+  <div id="drawer" class="drawer">
+    <div class="backdrop" onclick="toggleCart(false)"></div>
+    <aside class="panel">
+      <div class="nav" style="padding:10px"><b>السلة</b></div>
+      <div id="cartList" class="cart-list"></div>
+      <div class="totals">
+        <div class="row"><span>الإجمالي</span><span id="grand">0 ر.س</span></div>
+        <button class="btn brand" onclick="openCheckout()" id="checkoutBtn" disabled>إتمام الشراء</button>
+      </div>
+    </aside>
+  </div>
+
+  <div class="modal" id="checkout">
+    <div class="sheet">
+      <form class="form">
+        <select id="paymentSelect">
+          <option value="تحويل بنكي">تحويل بنكي</option>
+          <option value="STC Pay">STC Pay</option>
+        </select>
+        <div id="paymentInfo"></div>
+        <button class="btn brand" type="submit">تأكيد الطلب</button>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2025 دارك ستور — جميع الحقوق محفوظة</p>
+    <p><a href="https://discord.com/invite/QNnGmznb99" target="_blank">الدسكورد</a></p>
+  </footer>
+
+  <script>
+  const PRODUCTS=[
+    {
+      id:1,
+      name:'مود فيفا',
+      price:15,
+      old:20,
+      cat:'فيفا',
+      img:'https://cdn.discordapp.com/attachments/1401601958988611647/1406604763059060839/Untitled-1.png?ex=68a31244&is=68a1c0c4&hm=be58b051d8af58250f3c76d1da9b8b949475463ff499dfa0ca84a0fa5a7517ff&'
+    },
+    {
+      id:2,
+      name:'فاملي فيود',
+      price:15,
+      old:20,
+      cat:'العاب',
+      img:'https://media.discordapp.net/attachments/1401601958988611647/1406607257407459338/d.png?ex=68a31497&is=68a1c317&hm=1b609529cb7e15a789c8de7cd05f2966fc52460ac4aa7382928c5c26cb614caf&=&format=webp&quality=lossless&width=661&height=881'
+    },
+    {
+      id:3,
+      name:'بكج ستريمر',
+      price:45,
+      old:75,
+      cat:'تصاميم',
+      img:'https://cdn.discordapp.com/attachments/1401601958988611647/1406607258963542098/w.png?ex=68a31498&is=68a1c318&hm=4ab89547c60cb0c19347581f93004e686f5f06b4ac1eb64f8ebabe0120417b79&'
+    },
+        {
+      id:4,
+      name:'يكج دسكورد',
+      price:15,
+      old:20,
+      cat:'فيفا',
+      img:'https://media.discordapp.net/attachments/1401601958988611647/1406607258040664204/ddd.png?ex=68a31497&is=68a1c317&hm=44173a2941895c903a82dacf90584de77f180ed8eeee25667d306b0f0bf78cd9&=&format=webp&quality=lossless&width=661&height=881'
+    },
+            {
+      id:5,
+      name:'بكج فايف ام',
+      price:75,
+      old:95,
+      cat:'تصاميم',
+      img:'https://cdn.discordapp.com/attachments/1401601958988611647/1406607257063657632/22.png?ex=68a31497&is=68a1c317&hm=3478a76865b6e964360499ac20810db370e990a1085c3e1af2bae2828e631008&'
+    },
+    {
+      id:6,
+      name:'لودنق سكرين',
+      price:19,
+      old:35,
+      cat:'تصاميم',
+      img:'https://media.discordapp.net/attachments/1401601958988611647/1406607258481070131/str.png?ex=68a31497&is=68a1c317&hm=52082aa3854bafc337e931eefaea6203ee0c4d8f85b896192e5c7b2e38c31e4f&=&format=webp&quality=lossless&width=661&height=881'
+    }
+  ];
+
+  const CATS=['الكل',...new Set(PRODUCTS.map(p=>p.cat))];
+  const state={q:'',cat:'الكل',sort:'popular',cart:[]};
+
+  function render(){
+    document.getElementById('cats').innerHTML=CATS.map(c=>
+      `<div class="chip ${c===state.cat?'active':''}" onclick="state.cat='${c}';render()">${c}</div>`
+    ).join('');
+
+    let items=PRODUCTS.filter(p=>(state.cat==='الكل'||p.cat===state.cat)&&(!state.q||p.name.includes(state.q)));
+
+    if(state.sort==='price_asc') items.sort((a,b)=>a.price-b.price);
+    if(state.sort==='price_desc') items.sort((a,b)=>b.price-a.price);
+
+    document.getElementById('grid').innerHTML=items.map(p=>
+      `<div class="card">
+         <div class="media"><img src="${p.img}" alt="${p.name}"></div>
+         <div class="content">
+           <div class="title">${p.name}</div>
+           <div class="row">
+             <div>
+               <span class="price">${p.price} ر.س</span>
+               ${p.old?`<span class="old">${p.old} ر.س</span>`:''}
+             </div>
+             <button class="btn brand" onclick="addToCart(${p.id})">أضف</button>
+           </div>
+         </div>
+       </div>`
+    ).join('');
+
+    updateCartBadge();
+  }
+
+  function addToCart(id){
+    const p=PRODUCTS.find(x=>x.id===id);
+    const r=state.cart.find(x=>x.id===id);
+    if(r) r.qty++;
+    else state.cart.push({id,qty:1});
+    renderCart();
+    updateCartBadge();
+    toggleCart(true);
+  }
+
+  function renderCart(){
+    const list=document.getElementById('cartList');
+    if(!state.cart.length){
+      list.innerHTML='<div>السلة فارغة</div>';
+      document.getElementById('grand').textContent='0 ر.س';
+      return;
+    }
+    let total=0;
+    list.innerHTML=state.cart.map(r=>{
+      const p=PRODUCTS.find(x=>x.id===r.id);
+      total+=p.price*r.qty;
+      return `<div class="cart-item"><img src="${p.img}"><div>${p.name} ×${r.qty}</div><div>${p.price*r.qty} ر.س</div></div>`;
+    }).join('');
+    document.getElementById('grand').textContent=total+' ر.س';
+    document.getElementById('checkoutBtn').disabled=false;
+  }
+
+  function updateCartBadge(){
+    document.getElementById('cartCount').textContent=state.cart.reduce((s,r)=>s+r.qty,0)
+  }
+
+  function toggleCart(open){
+    document.getElementById('drawer').classList.toggle('open',open)
+  }
+
+  function openCheckout(){
+    document.getElementById('checkout').classList.add('open');
+    updatePaymentInfo();
+  }
+
+  const paymentSelect=document.getElementById('paymentSelect');
+  const paymentInfo=document.getElementById('paymentInfo');
+  paymentSelect.addEventListener('change',updatePaymentInfo);
+
+  function updatePaymentInfo(){
+    if(paymentSelect.value==='تحويل بنكي'){
+      paymentInfo.innerHTML='اسم البنك: الراجحي<br>الحساب: 077010010006083300808<br>IBAN: SA02 8000 0856 6080 1330 0808<br>صوّر الإيصال وارسله واتساب 0559820067 او ادخل سيرفر الدسكورد وارسل الايصال اسفل الصفحة موجود رابط الدسكورد';
+    } else if(paymentSelect.value==='STC Pay'){
+      paymentInfo.innerHTML='حوّل على STC Pay: 0559820067<br>صوّر الإيصال وارسله واتساب 0559820067 او ادخل سيرفر الدسكورد وارسل الايصال اسفل الصفحة موجود رابط الدسكورد';
+    } else {
+      paymentInfo.innerHTML='الدفع عند الاستلام';
+    }
+  }
+
+  render();
+  document.getElementById('q').oninput=e=>{state.q=e.target.value;render()};
+  document.getElementById('openCart').onclick=()=>toggleCart(true);
+  </script>
+</body>
+</html>
