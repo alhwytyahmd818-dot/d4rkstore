@@ -703,7 +703,7 @@ footer a{
       <img id="logoImg" src="logo.png" alt="شعار المتجر">
       <div class="logo-text">
         <h1>D4RK STORE</h1>
-        <span>متجرك للألعاب والتصاميم الرقمية</span>
+        <span></span>
       </div>
     </div>
 
@@ -722,19 +722,33 @@ footer a{
 <section class="hero">
 
   <div class="hero-card">
-    <small>D4RK STORE</small>
-    <h2>أفضل المنتجات الرقمية والتعديلات الاحترافية</h2>
-    <p>
-      تجربة متجر حديثة وسريعة مع تصميم فاخر يعرض منتجاتك بشكل احترافي.
-      تم الحفاظ على جميع الخصائص مثل طرق الدفع والسلة والمنتجات بالكامل.
-    </p>
+
+<iframe 
+  width="100%" 
+  height="100%"
+  src="https://www.youtube.com/watch?v=k0NMjS5U8ZA"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+  style="
+    min-height:420px;
+    border:none;
+    border-radius:28px;
+    overflow:hidden;
+  ">
+</iframe>
+
   </div>
 
   <div class="hero-boxes">
 
     <div class="mini-box">
-      <h3>⚡ سرعة وأداء</h3>
-      <p>تصميم عصري بخفة عالية وتأثيرات احترافية وتجربة ممتازة على الجوال والكمبيوتر.</p>
+      <h3>🎮 مودات فيفا احترافية</h3>
+      <p>
+        أفضل مودات فيفا العربية والخليجية مع تحديثات مستمرة للأطقم والشعارات
+        والبطولات وتجربة لعب واقعية بالكامل.
+      </p>
     </div>
 
     <div class="mini-box">
@@ -846,19 +860,32 @@ footer a{
 const PRODUCTS = [
   {
     id: 1,
-    name: "بكج مود اسيا والعرب والخليج للمنتخبات والاندية",
-    price: 30,
-    old: 50,
+    name: 'مود الدوري السعودي 2006',
+    price: 0,
+    old: 0,
     cat: 'فيفا',
-    img: 'fifa-mod.png',
+    img: 'fifa-mod3.png',
     images: [
-      'fifa-1.png'
+      'fifa-3.png'
     ],
-    desc: 'مود فيفا يضيف باكج الأندية والمنتخبات الخليجية والعربية مع أطقم وشعارات محدثة وأجواء بطولات كأس الخليج وكأس العرب بتجربة واقعية ومميزة.'
+    desc: 'مود دوري السعودي الكلاسيكي يضيف فرق الدوري السعودي من 2006 وما قبل مع الأطقم القديمة والشعارات والتشكيلات التاريخية لتجربة تعيد ذكريات الزمن الجميل.'
   },
 
   {
     id: 2,
+    name: "بكج مود اسيا والعرب والخليج للمنتخبات والاندية",
+    price: 30,
+    old: 50,
+    cat: 'فيفا',
+    img: 'fifa-mod2.png',
+    images: [
+      'fifa-2.png'
+    ],
+    desc: 'مود فيفا يضيف باكج الأندية والمنتخبات الخليجية والعربية مع أطقم وشعارات محدثة وأجواء بطولات كأس الخليج وكأس العرب بتجربة واقعية ومميزة.'
+  },
+
+    {
+    id: 3,
     name: 'مود كاس اسيا والعرب والخليج للمنتخبات',
     price: 15,
     old: 25,
@@ -871,40 +898,40 @@ const PRODUCTS = [
   },
 
     {
-    id: 3,
+    id: 4,
     name: 'مود كاس اسيا والعرب والخليج ودوري يلو وجميع الدرجات للاندية',
     price: 15,
     old: 25,
     cat: 'فيفا',
     img: 'fifa-mod.png',
     images: [
-      'fifa-1.png'
+      'fifa-.png'
     ],
     desc: 'مود فيفا 26 في هذا المود تعيش الواقع اكثر مع دارك ستور بتواجد جميع درجات الدوري السعودي واضافة حقوق دوري ابطال اسيا للنخبة واضافة الدوري القطري والاماراتي والايراني والعراقي'
   },
 
     {
-    id: 4,
+    id: 5,
     name: 'فاملي فيود',
     price: 5,
     old: 20,
     cat: 'العاب',
-    img: 'assets/images/products/family-feud.png',
+    img: 'family-feud.png',
     images: [
-      'assets/images/products/family-1.png'
+      'family-1.png'
     ],
     desc: 'لعبة ترفيهية ممتعة'
   },
 
   {
-    id: 5,
+    id: 6,
     name: 'بكج دسكورد',
     price: 15,
     old: 25,
     cat: 'تصاميم',
-    img: 'assets/images/products/discord-pack.png',
+    img: 'discord-pack.png',
     images: [
-      'assets/images/products/discord-1.png'
+      'discord-1.png'
     ],
     desc: 'بكج سيرفر دسكورد شامل لتصميم وإدارة سيرفرك بسهولة.'
   }
