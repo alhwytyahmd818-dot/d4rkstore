@@ -692,107 +692,40 @@ footer a{
   }
 }
 
-@media(max-width:768px){
-
-  body{
-    overflow-x:hidden;
-  }
-
-  .container,
-  .nav,
-  .hero,
-  .chips,
-  .grid{
-    width:95%;
-  }
-
-  .nav{
-    flex-direction:column;
-    gap:14px;
-    padding:14px 0;
-  }
-
-  .search{
-    width:100%;
-    flex-direction:column;
-  }
-
-  .input,
-  .brand{
-    width:100%;
-  }
-
-  .hero{
-    grid-template-columns:1fr;
-    gap:18px;
-    margin-top:20px;
-  }
-
-  .hero-card{
-    padding:16px;
-    border-radius:22px;
-  }
-
-  .hero iframe{
-    min-height:220px !important;
-  }
-
-  .hero h2{
-    font-size:24px;
-    line-height:1.5;
-  }
-
-  .mini-box{
-    padding:18px;
-  }
-
-  .grid{
-    grid-template-columns:1fr;
-    gap:16px;
-  }
-
-  .card{
-    border-radius:22px;
-  }
-
-  .content{
-    padding:16px;
-  }
-
-  .title{
-    font-size:18px;
-  }
-
-  .price{
-    font-size:22px;
-  }
-
-  .sheet{
-    border-radius:22px;
-  }
-
-  .slides img{
-    max-height:220px;
-  }
-
-  #detailTitle{
-    font-size:24px;
-  }
-
-  .cart-item{
-    flex-direction:column;
-    text-align:center;
-  }
-
-  .remove-btn{
-    margin-right:0;
-    width:100%;
-  }
-
-  .drawer .panel{
-    width:100%;
-  }
-
+.reviews-marquee{
+  width:min(1250px,92%);
+  margin:25px auto;
+  overflow:hidden;
+  border-radius:20px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.06);
+  padding:16px 0;
+}
+.reviews-track{
+  display:flex;
+  gap:20px;
+  width:max-content;
+  animation:reviewsMove 25s linear infinite;
+}
+.review-item{
+  min-width:280px;
+  background:rgba(182,255,0,.08);
+  border:1px solid rgba(182,255,0,.15);
+  border-radius:16px;
+  padding:14px 18px;
+  text-align:center;
+}
+.review-item span{
+  display:block;
+  font-weight:800;
+  margin:6px 0;
+}
+.review-item small{
+  color:#cfd8cf;
+}
+@keyframes reviewsMove{
+  from{transform:translateX(100%);}
+  to{transform:translateX(-100%);}
 }
 
 </style>
@@ -837,7 +770,6 @@ footer a{
   allowfullscreen
   style="
     min-height:420px;
-    width:100%;
     border:none;
     border-radius:28px;
     overflow:hidden;
@@ -863,6 +795,27 @@ footer a{
 
   </div>
 
+</section>
+
+
+<section class="reviews-marquee">
+  <div class="reviews-track">
+    <div class="review-item">
+      ⭐⭐⭐⭐⭐
+      <span>اسم الزبون 1</span>
+      <small>اكتب التقييم هنا</small>
+    </div>
+    <div class="review-item">
+      ⭐⭐⭐⭐⭐
+      <span>اسم الزبون 2</span>
+      <small>اكتب التقييم هنا</small>
+    </div>
+    <div class="review-item">
+      ⭐⭐⭐⭐⭐
+      <span>اسم الزبون 3</span>
+      <small>اكتب التقييم هنا</small>
+    </div>
+  </div>
 </section>
 
 <div class="chips" id="cats"></div>
